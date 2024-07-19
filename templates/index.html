@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets API Interface</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Google Sheets API</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="alert alert-{{ messages[0][0] }}">
+                {{ messages[0][1] }}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <h2>Datos Actuales</h2>
+        <div class="table-responsive">
+            {{ data|safe }}
+        </div>
+
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            {% if page > 1 %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('index', page=page-1) }}">Anterior</a></li>
+            {% endif %}
+            {% for i in range(1, total_pages + 1) %}
+            <li class="page-item {% if i == page %}active{% endif %}"><a class="page-link" href="{{ url_for('index', page=i) }}">{{ i }}</a></li>
+            {% endfor %}
+            {% if page < total_pages %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('index', page=page+1) }}">Siguiente</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+
+        <h2 class="mt-4">Agregar Datos</h2>
+        <form action="{{ url_for('add') }}" method="POST" class="mb-4">
+            <div class="form-group">
+                <label for="ID">ID:</label>
+                <input type="text" class="form-control" id="ID" name="ID" required>
+            </div>
+            <div class="form-group">
+                <label for="Nombre">Nombre:</label>
+                <input type="text" class="form-control" id="Nombre" name="Nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="email" class="form-control" id="Email" name="Email" required>
+            </div>
+            <div class="form-group">
+                <label for="Lider">Líder:</label>
+                <input type="text" class="form-control" id="Lider" name="Lider" required>
+            </div>
+            <div class="form-group">
+                <label for="FechaDesde">Fecha Desde (YYYY-MM-DD):</label>
+                <input type="date" class="form-control" id="FechaDesde" name="FechaDesde" required>
+            </div>
+            <div class="form-group">
+                <label for="FechaHasta">Fecha Hasta (YYYY-MM-DD):</label>
+                <input type="date" class="form-control" id="FechaHasta" name="FechaHasta" required>
+            </div>
+            <div class="form-group">
+                <label for="Tipo">Tipo:</label>
+                <input type="text" class="form-control" id="Tipo" name="Tipo" required>
+            </div>
+            <div class="form-group">
+                <label for="Motivo">Motivo (opcional):</label>
+                <input type="text" class="form-control" id="Motivo" name="Motivo">
+            </div>
+            <div class="form-group">
+                <label for="Estado">Estado (Aprobado/Rechazado/Pendiente):</label>
+                <input type="text" class="form-control" id="Estado" name="Estado" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Datos</button>
+        </form>
+
+        <h2 class="mt-4">Actualizar Datos</h2>
+        <form action="{{ url_for('update') }}" method="POST" class="mb-4">
+            <div class="form-group">
+                <label for="RowNumber">Número de Fila:</label>
+                <input type="text" class="form-control" id="RowNumber" name="RowNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="ID">ID:</label>
+                <input type="text" class="form-control" id="ID" name="ID">
+            </div>
+            <div class="form-group">
+                <label for="Nombre">Nombre:</label>
+                <input type="text" class="form-control" id="Nombre" name="Nombre">
+            </div>
+            <div class="form-group">
+                <label for="Email">Email:</label>
+                <input type="email" class="form-control" id="Email" name="Email">
+            </div>
+            <div class="form-group">
+                <label for="Lider">Líder:</label>
+                <input type="text" class="form-control" id="Lider" name="Lider">
+            </div>
+            <div class="form-group">
+                <label for="FechaDesde">Fecha Desde (YYYY-MM-DD):</label>
+                <input type="date" class="form-control" id="FechaDesde" name="FechaDesde">
+            </div>
+            <div class="form-group">
+                <label for="FechaHasta">Fecha Hasta (YYYY-MM-DD):</label>
+                <input type="date" class="form-control" id="FechaHasta" name="FechaHasta">
+            </div>
+            <div class="form-group">
+                <label for="Tipo">Tipo:</label>
+                <input type="text" class="form-control" id="Tipo" name="Tipo">
+            </div>
+            <div class="form-group">
+                <label for="Motivo">Motivo (opcional):</label>
+                <input type="text" class="form-control" id="Motivo" name="Motivo">
+            </div>
+            <div class="form-group">
+                <label for="Estado">Estado (Aprobado/Rechazado/Pendiente):</label>
+                <input type="text" class="form-control" id="Estado" name="Estado">
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar Datos</button>
+        </form>
+
+        <h2 class="mt-4">Eliminar Datos</h2>
+        <form action="{{ url_for('delete') }}" method="POST">
+            <div class="form-group">
+                <label for="RowNumber">Número de Fila:</label>
+                <input type="text" class="form-control" id="RowNumber" name="RowNumber" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Eliminar Datos</button>
+        </form>
+    </div>
+</body>
+</html>
